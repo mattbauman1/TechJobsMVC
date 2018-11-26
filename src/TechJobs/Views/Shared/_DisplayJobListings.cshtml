@@ -1,0 +1,68 @@
+﻿@functions{
+    private string convertToUpperCase(string input)
+    {
+        char[] inArr = input.ToCharArray();
+        char[] outArr = new char[input.Length];
+        for (int i = 0; i < inArr.Length; i++)
+        {
+            if (i == 0)
+            {
+                outArr[0] = Char.ToUpper(inArr[0]);
+            }
+            else if (Char.IsWhiteSpace(inArr[i]) && inArr[i + 1] != '\0')
+            {
+                outArr[i] = inArr[i];
+                i++;
+                outArr[i] = Char.ToUpper(inArr[i]);
+            }
+            else
+            {
+                outArr[i] = inArr[i];
+            }
+        }
+        return new string(outArr);
+    }
+}
+<h3>@ViewBag.jobs.Count Result(s)</h3>
+@if (ViewBag.jobs.Count == 0)
+{
+    <h3>There are no results to display!</h3>
+    @if (Object.ReferenceEquals(ViewBag.jobs.GetType(), typeof(List<int>)))
+    {
+        <br />
+        <h3>You did not give a search parameter, please try again!</h3>
+    }
+}
+
+else
+{
+    @foreach (Dictionary<string, string> job in ViewBag.jobs)
+    {
+        <table class="job-listing">
+            @foreach (KeyValuePair<string, string> jobField in job)
+            {
+                @if (jobField.Value != "" && jobField.Key == "name")
+                {
+                    <tr>
+                        <td>@convertToUpperCase(jobField.Key)</td>
+                        <td>@jobField.Value</td>
+                    </tr>
+                }
+                else if (jobField.Value != "")
+                {
+                    <tr>
+                        <td>@convertToUpperCase(jobField.Key)</td>
+                        <td><a asp-controller="List" asp-action="Jobs" asp-route-column="@jobField.Key" asp-route-value="@jobField.Value">@jobField.Value</a></td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td>@convertToUpperCase(jobField.Key)</td>
+                        <td>No value exists for this field!</td>
+                    </tr>
+                }
+            }
+        </table>
+    }
+}

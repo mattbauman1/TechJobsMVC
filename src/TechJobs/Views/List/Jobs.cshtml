@@ -1,26 +1,3 @@
 ﻿<h1>@ViewBag.title</h1>
 
-<h3>@ViewBag.jobs.Count Result(s)</h3>
-
-@foreach (Dictionary<string, string> job in ViewBag.jobs)
-    {
-        <table class="job-listing">
-            @foreach (KeyValuePair<string, string> jobField in job)
-            {
-                @if (jobField.Value != "")
-                {
-                    <tr>
-                        <td>@jobField.Key</td>
-                        <td>@jobField.Value</td>
-                    </tr>
-                }
-                else
-                {
-                    <tr>
-                        <td>@jobField.Key</td>
-                        <td>No value exists for this field!</td>
-                    </tr>
-                }
-            }
-        </table>
-    }
+@Html.Partial("_DisplayJobListings")
